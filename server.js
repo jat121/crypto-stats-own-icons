@@ -31,36 +31,36 @@ app.get('/api/:style/:currency/:size/:color?', async(req, res) => {
   }
 
   // Redis
-  var redisRetryStrategy = function(options) {
-    if (options.error.code === 'ECONNREFUSED') {
-      return
-    }
-  }
+  // var redisRetryStrategy = function(options) {
+  //   if (options.error.code === 'ECONNREFUSED') {
+  //     return
+  //   }
+  // }
 
-  const redisURL = process.env.REDIS_URL || 'http://127.0.0.1:6379'
-  var client = require('redis').createClient({
-    url : process.env.REDIS_URL,
-    return_buffers : true
-  })
+  // const redisURL = process.env.REDIS_URL || 'http://127.0.0.1:6379'
+  // var client = require('redis').createClient({
+  //   url : process.env.REDIS_URL,
+  //   return_buffers : true
+  // })
 
-  client.on('error', function (err) {
-    client.quit()
-    generatePNG(req, res, null)
-  })
+  // client.on('error', function (err) {
+    // client.quit()
+    await generatePNG(req, res)
+  // })
 
-  client.on('connect', function (err) {
-    // Check cache
-    client.get(cacheKey, async(error, result) => {
-      if (result == null) {
-        console.log("Cache miss")
-        generatePNG(req, res, client)
-      } else {
-        client.quit()
-        console.log("Cache hit")
-        sendPNG(res, result, filename)
-      }
-    })
-  })
+  // client.on('connect', function (err) {
+  //   // Check cache
+  //   client.get(cacheKey, async(error, result) => {
+  //     if (result == null) {
+  //       console.log("Cache miss")
+  //       generatePNG(req, res, client)
+  //     } else {
+  //       client.quit()
+  //       console.log("Cache hit")
+  //       sendPNG(res, result, filename)
+  //     }
+  //   })
+  // })
 })
 
 // Functions
@@ -71,7 +71,7 @@ function sendPNG(response, png, filename) {
   response.send(png)
 }
 
-async function generatePNG(req, res, redis) {
+async function generatePNG(req, res) {
   // Params
   const style = req.params.style
   const currency = req.params.currency
@@ -124,16 +124,16 @@ async function generatePNG(req, res, redis) {
   });
 
   // Save to redis
-  if (redis != null) {
-    redis.set(cacheKey, png, function(err) {
-      redis.quit()
-    })
-  }
+  // if (redis != null) {
+  //   redis.set(cacheKey, png, function(err) {
+  //     redis.quit()
+  //   })
+  // }
 
   // Return response
   sendPNG(res, png, filename)
 }
 
 // Listen
-var port = process.env.PORT || 3000;
+var port = 3000;
 app.listen(port, () => console.log('Our app is running on http://localhost:' + port))
