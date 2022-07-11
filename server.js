@@ -45,7 +45,15 @@ app.get('/api/:style/:currency/:size/:color?', async(req, res) => {
 
   // client.on('error', function (err) {
     // client.quit()
+
+    try {
     await generatePNG(req, res)
+      
+    } catch (error) {
+      console.log('err aaya',error);
+      res.status(error.response.status)
+      return res.send(error.message);
+    }
   // })
 
   // client.on('connect', function (err) {
@@ -81,8 +89,8 @@ async function generatePNG(req, res) {
   const filename = currency + '-' + style + '-' + size + '.png'
 
   // SVG file path
-  const svgPath = path.join(__dirname, 'public', 'svg', style, currency + '.svg');
-
+  const svgPath = path.join('public', 'svg', style, currency + '.svg');
+  console.log('svg', svgPath);
   // Check if file exists
   if (!fs.existsSync(svgPath)) {
     res.status(404).send(null);
