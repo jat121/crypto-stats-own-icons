@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('/public'));
 
 // GET Home page
 app.get('/', function(req, res) {
