@@ -143,5 +143,5 @@ async function generatePNG(req, res) {
 }
 
 // Listen
-var port = (process.env.PORT || 3000);
-app.listen(port, () => console.log('Our app is running on http://localhost:' + port))
+const PORT = (process.env.PORT || 80);
+app.listen(PORT, () => console.log('Our app is running on http://localhost:' + PORT))
