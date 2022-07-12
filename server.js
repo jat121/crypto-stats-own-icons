@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 
 
-app.use(express.static('/public'));
+app.use(express.static('public'));
 
 // GET Home page
 app.get('/', function(req, res) {
@@ -145,3 +145,5 @@ async function generatePNG(req, res) {
 // Listen
 const PORT = (process.env.PORT || 80);
 app.listen(PORT, () => console.log('Our app is running on http://localhost:' + PORT))
+
+module.exports = app;
