@@ -9,7 +9,7 @@ const path = require('path');
 
 
 app.use(express.static('public'));
-
+app.use(cors)
 // GET Home page
 app.get('/', function(req, res) {
   res.sendFile('index.html');
